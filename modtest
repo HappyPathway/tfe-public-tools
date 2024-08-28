@@ -36,6 +36,7 @@ def main(repo_type, git_server, git_org, key, branch, refresh, target, plan):
                 cur_dir = os.getcwd()
                 os.chdir(repo_dir)
                 os.system("git fetch")
+                print(f"git checkout {branch}")
                 os.system(f"git checkout {branch}")
                 os.chdir(cur_dir)
                 tf_mod_key = ".module.".join(mod_key.split(".")).lstrip(".")
@@ -63,11 +64,12 @@ if __name__ == '__main__':
     ''')
     from optparse import OptionParser
     p = OptionParser(usage=doc.render(file_name=os.path.basename(__file__)))
+    p.add_option("--repo", default="ssh")
     for cli_param in ["key", "branch", "server", "org"]:
         p.add_option(f"--{cli_param}", default=False)
     for cli_param in ["target", "refresh", "plan"]:
         p.add_option(f"--{cli_param}", action="store_true", default=False)
     opt, arg = p.parse_args()
-    main(opt.key, opt.branch, opt.refresh, opt.target, opt.plan),
+    main(opt.repo, opt.server, opt.org, opt.key, opt.branch, opt.refresh, opt.target, opt.plan),
     
 
